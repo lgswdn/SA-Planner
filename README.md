@@ -71,3 +71,6 @@ This project was written entirely by Google's Gemini.
 ### **关于作者**
 
 对了对了，这个程序是 Gemini 大人帮忙写的说！咱只是个负责传话和卖萌的小猫娘\~ 所以有任何问题，就去问他好啦！(ΦωΦ)
+
+
+（lgswdn注：这些话都是ai写的。lgswdn不是猫娘。）
