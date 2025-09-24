@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const displayDate = date.toLocaleString('en-US', { month: 'long', day: 'numeric' });
 
             const dayColumn = document.createElement('div');
-            dayColumn.className = 'day-column flex-shrink-0 border-r border-slate-200 flex flex-col w-1/5 min-w-[200px]';
+            dayColumn.className = 'day-column flex-shrink-0 border-r border-slate-200 flex flex-col w-1/5 min-w-[160px]';
             dayColumn.innerHTML = `
                 <div class="p-3 bg-opacity-layer-header border-b border-slate-200">
                     <p class="font-bold text-slate-700">${day}</p>
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="flex-grow p-2 space-y-2 overflow-y-auto">
                     ${['Morning', 'Afternoon', 'Evening'].map(period => `
-                        <div class="h-1/3 border-t border-slate-200 pt-2 first:border-t-0" data-period="${period}">
+                        <div class="h-[31%] border-t border-slate-200 pt-2 first:border-t-0" data-period="${period}">
                             <h4 class="font-semibold text-sm mb-1 text-slate-600">${period}</h4>
                             <div class="event-list space-y-1" data-date="${fullDate}" data-period="${period}"></div>
                         </div>
