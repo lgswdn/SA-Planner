@@ -50,18 +50,28 @@ document.addEventListener('DOMContentLoaded', () => {
             eventTextInput.style.borderColor = 'red';
             return;
         }
+        // Reset border color on successful input
+        eventTextInput.style.borderColor = '';
+        datePicker.style.borderColor = '';
 
-        let eventDate = new Date();
+
+        let eventDateStr; // The final YYYY-MM-DD date string
         const recurring = currentMode === 'every-weekday';
 
         if (currentMode === 'next-weekday' || currentMode === 'every-weekday') {
             if (selectedWeekday === null) {
-                // No day selected, maybe flash the buttons
+                // No day selected, flash the buttons
                 weekdayPanel.animate([ { transform: 'scale(1)' }, { transform: 'scale(1.02)' }, { transform: 'scale(1)' } ], { duration: 300 });
                 return;
             }
+            
+            const today = new Date();
+            // Create a date object for today at midnight to avoid timezone issues with `new Date()`
+            const eventDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            
             const todayDay = eventDate.getDay();
             let dayDifference = selectedWeekday - todayDay;
+
             if (dayDifference <= 0 && currentMode === 'next-weekday') {
                 dayDifference += 7;
             } else if (dayDifference < 0 && currentMode === 'every-weekday') {
@@ -75,14 +85,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             eventDate.setDate(eventDate.getDate() + dayDifference);
 
+            // Convert to YYYY-MM-DD string reliably
+            const year = eventDate.getFullYear();
+            const month = String(eventDate.getMonth() + 1).padStart(2, '0');
+            const day = String(eventDate.getDate()).padStart(2, '0');
+            eventDateStr = `${year}-${month}-${day}`;
+
         } else if (currentMode === 'exact-date') {
-            eventDate = new Date(datePicker.value);
-            // Adjust for timezone offset to get the correct date
-            eventDate.setMinutes(eventDate.getMinutes() + eventDate.getTimezoneOffset());
+            // The date picker value is already in 'YYYY-MM-DD' format. No conversion needed.
+            if (!datePicker.value) {
+                datePicker.style.borderColor = 'red';
+                return;
+            }
+            eventDateStr = datePicker.value;
         }
 
         const eventData = {
-            date: eventDate.toISOString().split('T')[0],
+            date: eventDateStr,
             period: eventPeriodSelect.value,
             text: text,
             recurring: recurring
@@ -91,4 +110,3 @@ document.addEventListener('DOMContentLoaded', () => {
         window.electronAPI.addEvent(eventData);
     });
 });
-

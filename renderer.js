@@ -97,9 +97,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const renderEvents = () => {
         document.querySelectorAll('.event-list').forEach(list => list.innerHTML = '');
-        Object.keys(events).forEach(dateKey => {
-            events[dateKey].forEach(event => {
-                 addEventToDOM(dateKey, event.period, event.text, event.id, false);
+
+        const displayedDateElements = document.querySelectorAll('.event-list[data-date]');
+        const displayedDates = new Set();
+        displayedDateElements.forEach(el => displayedDates.add(el.dataset.date));
+
+        displayedDates.forEach(displayedDateStr => {
+            const displayedDate = new Date(displayedDateStr + 'T00:00:00');
+            const displayedDay = displayedDate.getDay();
+
+            Object.keys(events).forEach(eventDateKey => {
+                events[eventDateKey].forEach(event => {
+                    if (event.recurring) {
+                        const eventStartDate = new Date(eventDateKey + 'T00:00:00');
+                        if (eventStartDate <= displayedDate && eventStartDate.getDay() === displayedDay) {
+                            addEventToDOM(displayedDateStr, event.period, event.text, event.id, true);
+                        }
+                    } else {
+                        if (eventDateKey === displayedDateStr) {
+                            addEventToDOM(displayedDateStr, event.period, event.text, event.id, false);
+                        }
+                    }
+                });
             });
         });
     };
@@ -107,14 +126,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addEventToDOM = (date, period, text, id, isRecurring) => {
         const list = document.querySelector(`.event-list[data-date="${date}"][data-period="${period}"]`);
         if (!list) return;
+        
+        // Prevent duplicate rendering
+        if (list.querySelector(`[data-id="${id}"]`)) return;
+
         const eventEl = document.createElement('div');
-        eventEl.className = 'event-item relative bg-blue-100 text-blue-800 p-1.5 rounded-md text-sm';
+        const bgColor = isRecurring ? 'bg-purple-100' : 'bg-blue-100';
+        const textColor = isRecurring ? 'text-purple-800' : 'text-blue-800';
+        eventEl.className = `event-item relative ${bgColor} ${textColor} p-1.5 rounded-md text-sm`;
         eventEl.textContent = text;
         eventEl.dataset.id = id;
+        
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn absolute top-1/2 right-2 -translate-y-1/2 text-red-500 hover:text-red-700';
         deleteBtn.innerHTML = '&times;';
         deleteBtn.onclick = () => deleteEvent(id);
+        
         eventEl.appendChild(deleteBtn);
         list.appendChild(eventEl);
     };
@@ -125,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (events[dateKey].length === 0) delete events[dateKey];
         }
         saveData();
-        renderCalendar();
+        renderEvents(); // More efficient to just re-render events
     };
     
     const renderTasks = () => {
@@ -194,9 +221,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.electronAPI.onEventAdded((eventData) => {
             const { date, period, text, recurring } = eventData;
             if (!events[date]) { events[date] = []; }
-            events[date].push({ id: Date.now(), text, period, recurring });
-            saveData();
-            renderCalendar();
+            // Ensure we don't add a duplicate event if app is reloaded quickly
+            const eventExists = events[date].some(e => e.text === text && e.period === period);
+            if (!eventExists) {
+                events[date].push({ id: Date.now(), text, period, recurring });
+                saveData();
+                renderEvents();
+            }
         });
     }
 
@@ -221,4 +252,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCalendar();
     renderTasks();
 });
-
