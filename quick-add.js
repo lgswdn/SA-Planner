@@ -9,12 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const addEventBtn = document.getElementById('add-event-btn');
     const eventTextInput = document.getElementById('event-text');
     const eventPeriodSelect = document.getElementById('event-period');
+    const closeBtn = document.getElementById('close-btn'); // The new close button
 
     let currentMode = 'next-weekday'; // Default mode
     let selectedWeekday = null;
 
     // Set default date for picker
     datePicker.valueAsDate = new Date();
+
+    // --- NEW: Close button logic ---
+    closeBtn.addEventListener('click', () => {
+        // This function is exposed via preload.js and tells main.js to close the window
+        if (window.electronAPI) {
+            window.electronAPI.closeQuickAdd();
+        }
+    });
 
     // Mode switching logic
     modeButtons.forEach(button => {
@@ -42,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Add event logic
+    // Add event logic (using the previously fixed version)
     addEventBtn.addEventListener('click', () => {
         const text = eventTextInput.value.trim();
         if (!text) {
@@ -110,3 +119,4 @@ document.addEventListener('DOMContentLoaded', () => {
         window.electronAPI.addEvent(eventData);
     });
 });
+

@@ -12,7 +12,10 @@
     </style>
 </head>
 <body class="bg-slate-100 p-4">
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col h-full relative">
+        <!-- Close Button -->
+        <button id="close-btn" class="absolute top-0 right-0 text-slate-400 hover:text-slate-700 text-2xl leading-none font-bold">&times;</button>
+
         <!-- Event Description -->
         <label for="event-text" class="text-sm font-medium text-slate-700">Event Description</label>
         <input type="text" id="event-text" class="w-full p-2 mt-1 border border-slate-300 rounded-md" placeholder="e.g., Team Meeting" autofocus>
@@ -59,4 +62,3 @@
     <script src="./quick-add.js"></script>
 </body>
 </html>
-
