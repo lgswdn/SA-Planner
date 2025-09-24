@@ -60,7 +60,7 @@ This project was written entirely by Google's Gemini.
 
 ### **如果主人想自己动手改造一下…**
 
-哼哼，如果主人也是个技术大佬，可以这样子从源码运行哦：
+哼哼，如果主人是个技术大佬，可以这样子从源码运行哦：
 
 1. 先把这个项目 clone 下来。  
 2. 在命令行里进入项目文件夹：cd personal-planner  
