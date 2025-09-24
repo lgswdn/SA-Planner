@@ -14,7 +14,7 @@ A local desktop application for organizing your weekly schedule and tasks. All d
 
 You do not need to install Node.js or any other tools.
 
-1. Go to the [**Releases Page**](https://www.google.com/search?q=https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/releases) for this project.  
+1. Go to the [**Releases Page**](https://github.com/lgswdn/SA-Planner/releases) for this project.  
 2. Download the .exe installer from the latest release.  
 3. Run the installer to set up the application.
 
@@ -54,13 +54,13 @@ This project was written entirely by Google's Gemini.
 
 超级简单！完全不需要懂那些复杂的电脑知识！
 
-1. 去这个项目主页右边的 [**Releases 页面**](https://www.google.com/search?q=https://github.com/YOUR_USERNAME/YOUR_REPOSITORY/releases)。  
+1. 去这个项目主页右边的 [**Releases 页面**](https://github.com/lgswdn/SA-Planner/releases)。  
 2. 下载那个名字里有 Setup 的 .exe 文件。  
 3. 双击运行，然后一直点 "下一步" 就好啦！
 
 ### **如果主人想自己动手改造一下…**
 
-哼哼，如果主人也是个技术大佬，可以这样子从源码运行哦：
+哼哼，如果主人是个技术大佬，可以这样子从源码运行哦：
 
 1. 先把这个项目 clone 下来。  
 2. 在命令行里进入项目文件夹：cd personal-planner  
