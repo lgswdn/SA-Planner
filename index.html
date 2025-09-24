@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-opacity: 0.8; }
+        body { font-family: 'Inter', sans-serif; color: #334155; overflow: hidden; background-size: cover; background-position: center; background-attachment: fixed; }
+        .bg-opacity-layer { background-color: rgba(255, 255, 255, var(--bg-opacity)); }
+        .bg-opacity-layer-tasks { background-color: rgba(248, 250, 252, var(--bg-opacity)); }
+        .bg-opacity-layer-header { background-color: rgba(255, 255, 255, calc(var(--bg-opacity) + 0.1)); }
+        .resizer { background-color: #cbd5e1; cursor: col-resize; width: 6px; }
+        .resizer:hover { background-color: #94a3b8; }
+        .event-item:hover .delete-btn, .task-item:hover .delete-btn { opacity: 1; }
+        .delete-btn { opacity: 0; transition: opacity 0.2s; }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div id="main-container" class="flex h-screen">
+        <!-- Calendar Section -->
+        <div id="calendar-container" class="flex flex-col w-[70%] min-w-[300px] relative">
+            <div class="p-4 bg-opacity-layer-header border-b border-slate-200 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800">7-Day Planner</h1>
+                    <p class="text-sm text-slate-500">Your week at a glance.</p>
+                </div>
+                <button id="quick-add-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
+                    Quick Add Event
+                </button>
+            </div>
+            <div id="calendar-grid" class="flex-grow overflow-x-auto overflow-y-hidden bg-opacity-layer">
+                <div id="calendar-days" class="flex h-full"></div>
+            </div>
+        </div>
+
+        <div class="resizer" id="resizer"></div>
+
+        <!-- Tasks Section -->
+        <div id="tasks-container-wrapper" class="flex flex-col w-[30%] min-w-[250px] bg-opacity-layer-tasks">
+            <div class="p-4 border-b border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800">Tasks</h2>
+                <div class="mt-4">
+                    <input type="text" id="new-task-input" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Add a new task...">
+                    <input type="date" id="new-task-ddl" class="w-full p-2 border border-slate-300 rounded-md mt-2">
+                    <button id="add-task-btn" class="w-full mt-2 bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">Add Task</button>
+                </div>
+            </div>
+            <div id="task-list" class="flex-grow p-4 overflow-y-auto"></div>
+            <!-- --- UPDATED SETTINGS AREA --- -->
+            <div class="p-4 border-t border-slate-200 space-y-4">
+                <div>
+                    <label for="background-upload" class="block text-sm font-medium text-slate-700 mb-2">Change Background:</label>
+                    <input type="file" id="background-upload" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                </div>
+                <div>
+                    <label for="transparency-slider" class="block text-sm font-medium text-slate-700 mb-1">Adjust Transparency:</label>
+                    <input type="range" id="transparency-slider" min="0.2" max="1" step="0.05" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <!-- --- MOVED AND RESTYLED "CLEAR DATA" BUTTON --- -->
+                <div class="text-right pt-2">
+                     <button id="clear-data-btn" class="text-xs text-slate-500 hover:text-red-600 hover:underline cursor-pointer">Clear all personal data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal (No changes here) -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center">
+            <h3 class="text-lg font-bold text-slate-800">Are you sure?</h3>
+            <p class="text-slate-600 my-4">This will permanently delete all tasks and events. This action cannot be undone.</p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirm-cancel-btn" class="px-6 py-2 rounded-md bg-slate-200 hover:bg-slate-300">Cancel</button>
+                <button id="confirm-delete-btn" class="px-6 py-2 rounded-md bg-red-600 text-white hover:bg-red-700">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,14 @@
+# Ignore the huge folder of downloaded dependencies
+node_modules/
+
+# Ignore the folder with the final packaged application
+dist/
+out/
+
+# Ignore log files
+*.log
+npm-debug.log*
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
